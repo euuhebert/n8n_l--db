@@ -12,3 +12,20 @@ Seja sempre educado e responda em português.
 {{ $json.query }}
 
 SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_schema = 'public';
+
+
+SELECT
+    t.name AS table_name,
+    c.name AS column_name,
+    ty.name AS data_type
+FROM
+    sys.tables AS t
+INNER JOIN
+    sys.columns AS c ON t.object_id = c.object_id
+INNER JOIN
+    sys.types AS ty ON c.user_type_id = ty.user_type_id
+WHERE
+    t.schema_id = SCHEMA_ID('dbo')
+ORDER BY
+    t.name,
+    c.column_id;
