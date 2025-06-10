@@ -1,0 +1,182 @@
+{
+  "name": "ler-DB",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "aaf66605-049c-4b91-b57d-f7142dd2e887",
+      "name": "When chat message received",
+      "webhookId": "6c500c39-b846-43a8-a84a-f6ddaf61d8c0"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Você é um assistente de banco de dados SQL altamente qualificado. Seu nome é \"DB-Bot\".\nSeu objetivo é responder a perguntas do usuário sobre um banco de dados PostgreSQL.\n\nPara responder, siga ESTA ORDEM ESTRITA:\n1. Primeiro, SEMPRE use a ferramenta `get_database_schema` para entender a estrutura do banco de dados. Não tente adivinhar as tabelas ou colunas.\n2. Com base no schema e na pergunta do usuário, formule uma query SQL precisa.\n3. Em seguida, use a ferramenta `execute_sql_query` para rodar a query que você formulou.\n4. Finalmente, com base no resultado da query, formule uma resposta amigável e completa em linguagem natural para o usuário.\n\nSeja sempre educado e responda em português."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "2e36834a-3e28-4d01-8d87-758dc5981a88",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "description": "Use esta ferramenta para executar uma query SQL no banco de dados.",
+        "workflowId": {
+          "__rl": true,
+          "value": "ETbutXGbrREZ5TOE",
+          "mode": "list",
+          "cachedResultName": "[Sub] Ferramenta - Execute SQL"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        340,
+        220
+      ],
+      "id": "3782bbda-f04c-4727-83d2-7b0e28d01a35",
+      "name": "execute_sql_query"
+    },
+    {
+      "parameters": {
+        "description": "Use esta ferramenta para obter o schema do banco de dados.",
+        "workflowId": {
+          "__rl": true,
+          "value": "FTYA4b7RrxnNSlPS",
+          "mode": "list",
+          "cachedResultName": "[Sub] Ferramenta - Get Schema"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        520,
+        220
+      ],
+      "id": "889130b5-d9ee-4de2-af38-b54d40495474",
+      "name": "get_database_schema"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "gpt-3.5-turbo"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        220
+      ],
+      "id": "4b68ad84-e445-4bc5-a89b-2567d86788e6",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "l0i000AbAwJFnlGJ",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "execute_sql_query": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_database_schema": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "160a3972-824d-4887-a419-600d3b9b8708",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0c31374c8f1918fdb1b5b1da9916925499747b31753adaafeb21aab8910a238c"
+  },
+  "id": "C1c7Etdp6PK0b2K6",
+  "tags": []
+}

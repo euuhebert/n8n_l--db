@@ -1,0 +1,70 @@
+{
+  "name": "[Sub] Ferramenta - Execute SQL",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $json.query }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        220,
+        0
+      ],
+      "id": "cd5a602f-7559-42ab-81ed-d0bfdd72af22",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "PQjeOEkyrl6VllCh",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0045d37c-6af2-46a7-b327-a634bb203eaa",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ddfb3026-1410-4e23-8aac-e28d8128fdc6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0c31374c8f1918fdb1b5b1da9916925499747b31753adaafeb21aab8910a238c"
+  },
+  "id": "ETbutXGbrREZ5TOE",
+  "tags": []
+}
