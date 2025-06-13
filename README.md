@@ -29,3 +29,21 @@ WHERE
 ORDER BY
     t.name,
     c.column_id;
+
+
+
+server {
+    listen       80;
+    server_name  seu_dominio.com www.seu_dominio.com; # Substitua pelo seu domínio ou endereço IP
+
+    root         /var/www/meu_site;
+    index        index.html index.htm;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # Opcional: Configurações de log
+    access_log  /var/log/nginx/meu_site.access.log;
+    error_log   /var/log/nginx/meu_site.error.log;
+}
